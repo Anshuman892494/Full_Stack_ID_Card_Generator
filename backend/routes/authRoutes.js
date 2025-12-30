@@ -63,7 +63,7 @@ router.post("/register", async (req, res) => {
         email: user.email,
         role: user.role
       },
-      process.env.JWT_SECRET || "id_generator_secret_key",
+      process.env.JWT_SECRET || "",
       { expiresIn: "7d" }
     );
 
