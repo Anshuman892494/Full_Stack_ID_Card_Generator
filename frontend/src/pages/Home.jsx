@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -7,18 +6,10 @@ export default function Home() {
         <div className="home-page">
             <Header />
 
-            <section className="hero">
-                <div className="container">
-                    <h2>Professional ID Card Solutions</h2>
-                    <p>Create stunning, secure, and professional ID cards for your organization with our easy-to-use platform</p>
-                    <Link to="/generate" className="btn">Generate Now</Link>
-                </div>
-            </section>
-
             <main className="container">
                 <section className="active">
                     <div className="section-title">
-                        <h2>Why Choose Our ID Card Generator?</h2>
+                        <h2>Why Choose Our ProID Studio?</h2>
                         <p>We provide the most comprehensive ID card solutions for businesses, schools, and organizations</p>
                     </div>
 

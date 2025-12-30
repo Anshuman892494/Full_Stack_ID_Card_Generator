@@ -1,10 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./Dashboard.css";
 
 export default function Dashboard() {
-    const navigate = useNavigate();
 
     // Get user from localStorage
     const user = JSON.parse(localStorage.getItem("user") || '{}');
@@ -33,12 +32,6 @@ export default function Dashboard() {
         { title: "Help & Support", description: "Get help & documentation", icon: "fa-question-circle", link: "#", color: "info" },
     ];
 
-    const handleLogout = () => {
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
-        navigate("/login");
-    };
-
     const formatDate = (dateString) => {
         if (!dateString) return "N/A";
         const date = new Date(dateString);
@@ -60,9 +53,6 @@ export default function Dashboard() {
                         <h1>Welcome back, <span className="user-name">{user.name || "User"}</span>! 👋</h1>
                         <p className="welcome-text">Here's what's happening with your ID cards today.</p>
                     </div>
-                    <button onClick={handleLogout} className="logout-btn">
-                        <i className="fas fa-sign-out-alt"></i> Logout
-                    </button>
                 </div>
 
                 {/* Stats Cards */}
@@ -160,18 +150,6 @@ export default function Dashboard() {
                                     {formatDate(user.createdAt)}
                                 </div>
                             </div>
-                        </div>
-                        <div className="upgrade-banner">
-                            <div className="upgrade-content">
-                                <div className="upgrade-icon">
-                                    <i className="fas fa-crown"></i>
-                                </div>
-                                <div>
-                                    <h4>Upgrade to Pro</h4>
-                                    <p>Unlock unlimited ID cards, premium templates, and priority support</p>
-                                </div>
-                            </div>
-                            <button className="upgrade-btn">Upgrade Now</button>
                         </div>
                     </div>
                 </div>

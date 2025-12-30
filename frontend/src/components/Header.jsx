@@ -30,7 +30,7 @@ export default function Header() {
                 <div className="header-content">
                     <div className="logo">
                         <i className="fas fa-id-card"></i>
-                        <h1>ID_Generator</h1>
+                        <h1>ProID Studio</h1>
                     </div>
 
                     <nav>
