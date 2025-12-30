@@ -1,0 +1,216 @@
+/* Register Page Styles */
+.register-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+}
+
+.register-section {
+    padding: var(--space-3xl) 0;
+}
+
+.register-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.register-form-container {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: var(--space-sm);
+}
+
+.form-group label i {
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    transition: all var(--transition-fast);
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(4, 103, 91, 0.1);
+    outline: none;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+}
+
+.checkbox-group label {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    font-weight: normal;
+    margin: 0;
+}
+
+.checkbox-group a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.checkbox-group a:hover {
+    text-decoration: underline;
+}
+
+.btn-full {
+    width: 100%;
+    padding: var(--space-lg);
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--gray-200);
+}
+
+.login-link p {
+    color: var(--gray-600);
+    margin: 0;
+}
+
+.login-link a {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Benefits Section */
+.register-benefits {
+    display: flex;
+    flex-direction: column;
+}
+
+.benefits-card {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    color: white;
+    height: 100%;
+}
+
+.benefits-card h3 {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-xl);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+.benefit-item i {
+    font-size: var(--font-size-xl);
+    color: var(--success);
+    margin-top: var(--space-xs);
+    flex-shrink: 0;
+}
+
+.benefit-item h4 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-xs);
+    color: white;
+}
+
+.benefit-item p {
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .register-container {
+        grid-template-columns: 1fr;
+    }
+
+    .register-benefits {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .register-section {
+        padding: var(--space-xl) 0;
+    }
+
+    .register-form-container {
+        padding: var(--space-xl);
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    .benefits-card {
+        padding: var(--space-xl);
+    }
+}
+
+@media (max-width: 480px) {
+    .register-form-container {
+        padding: var(--space-lg);
+    }
+
+    .benefit-item {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+}
