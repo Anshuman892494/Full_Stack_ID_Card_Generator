@@ -20,14 +20,6 @@ export default function Register() {
     const [showVerificationMessage, setShowVerificationMessage] = useState(false);
     const navigate = useNavigate();
 
-    // Check if user is already logged in
-    useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            navigate("/dashboard");
-        }
-    }, [navigate]);
-
     // Check password strength
     useEffect(() => {
         let strength = 0;
@@ -152,16 +144,19 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Clear previous messages
         setError("");
         setSuccessMessage("");
         setShowVerificationMessage(false);
 
+        // Validate form
         if (!validateForm()) return;
 
         setLoading(true);
 
         try {
-            // Prepare data for API call
+            // Prepare data for API
             const userData = {
                 name: form.name.trim(),
                 email: form.email.trim(),
@@ -170,64 +165,80 @@ export default function Register() {
                 phone: form.phone.trim()
             };
 
-            // API call to register user
             const response = await fetch(
                 `${process.env.REACT_APP_API_URL || "http://localhost:5050"}/api/auth/register`,
                 {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(userData),
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(userData)
                 }
             );
 
             const data = await response.json();
 
-            if (response.ok && data.success) {
-                if (data.requiresEmailVerification) {
-                    // Show verification message instead of redirecting to dashboard
-                    setShowVerificationMessage(true);
-                    setSuccessMessage(
-                        `Registration successful! Please check your email (${form.email}) for verification instructions.`
-                    );
-
-                    // Clear form
-                    setForm({
-                        name: "",
-                        email: "",
-                        password: "",
-                        confirmPassword: "",
-                        organization: "",
-                        phone: ""
-                    });
-                    setAgreed(false);
-
-                    // Optionally redirect to login after delay
-                    setTimeout(() => {
-                        navigate("/login");
-                    }, 5000);
-                } else if (data.token) {
-                    // If no email verification required, log in directly
-                    localStorage.setItem("token", data.token);
-                    localStorage.setItem("user", JSON.stringify(data.user));
-
-                    setSuccessMessage("Registration successful! Redirecting to dashboard...");
-
-                    // Redirect to dashboard after delay
-                    setTimeout(() => {
-                        navigate("/dashboard");
-                    }, 1500);
-                } else {
-                    // Fallback: redirect to login
-                    setSuccessMessage("Registration successful! Redirecting to login...");
-                    setTimeout(() => {
-                        navigate("/login");
-                    }, 1500);
-                }
-            } else {
+            // Handle registration failure
+            if (!response.ok || !data.success) {
                 setError(data.message || "Registration failed");
+                return;
             }
+
+            // CASE 1: Email verification required
+            if (data.requiresEmailVerification) {
+                setShowVerificationMessage(true);
+                setSuccessMessage(
+                    `Registration successful! Please verify your email (${form.email}) to continue.`
+                );
+
+                // Clear form
+                setForm({
+                    name: "",
+                    email: "",
+                    password: "",
+                    confirmPassword: "",
+                    organization: "",
+                    phone: ""
+                });
+                setAgreed(false);
+
+                // Redirect to /verify-email after 1.5s
+                setTimeout(() => {
+                    navigate("/verify-email", { state: { email: userData.email } });
+                }, 1500);
+
+                return;
+            }
+
+            // CASE 2: Token exists but user not verified
+            if (data.token && data.user && data.user.isVerified === false) {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                setSuccessMessage("Please verify your email to activate your account.");
+
+                setTimeout(() => {
+                    navigate("/verify-email", { state: { email: userData.email } });
+                }, 1500);
+
+                return;
+            }
+
+            // CASE 3: Token exists and user is verified
+            if (data.token && data.user && data.user.isVerified === true) {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                setSuccessMessage("Registration successful! Redirecting to dashboard...");
+
+                setTimeout(() => {
+                    navigate("/dashboard");
+                }, 1500);
+
+                return;
+            }
+
+            // Fallback: go to login page if something unexpected happens
+            navigate("/login");
+
         } catch (err) {
             console.error("Registration error:", err);
             setError("Network error! Please check your connection.");
@@ -235,6 +246,7 @@ export default function Register() {
             setLoading(false);
         }
     };
+
 
     const getPasswordStrengthColor = (strength) => {
         if (strength <= 2) return "bg-red-500";
@@ -443,9 +455,7 @@ export default function Register() {
                                                 autoComplete="new-password"
                                                 className={`w-full px-4 py-3 pl-12 border rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all duration-300 disabled:bg-gray-100 disabled:cursor-not-allowed 
                                                     ${form.confirmPassword
-                                                        ? form.password === form.confirmPassword
-                                                            ? 'border-green-300'
-                                                            : 'border-red-300'
+                                                        ? form.password === form.confirmPassword ? 'border-green-300' : 'border-red-300'
                                                         : 'border-gray-300'
                                                     }`}
                                             />
@@ -537,6 +547,9 @@ export default function Register() {
                                         disabled={loading}
                                         className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary/50 mt-1 flex-shrink-0"
                                     />
+
+                                    {/* Button is valiading after checkbox (color chnage)  */}
+
                                     <label htmlFor="agree" className="text-sm text-gray-700">
                                         I agree to the{" "}
                                         <Link to="/terms" className="text-primary hover:text-secondary font-medium">

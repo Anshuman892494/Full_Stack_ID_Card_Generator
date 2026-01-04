@@ -1,12 +1,17 @@
 import { Navigate } from "react-router-dom";
 
 export default function ProtectedRoute({ children }) {
-  // Check for both user and token
-  const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  if (!user || !token) {
+  // Not logged in
+  if (!token || !user) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Logged in but email not verified
+  if (!user.isVerified) {
+    return <Navigate to="/verify-email" replace />;
   }
 
   return children;
