@@ -57,8 +57,6 @@ It eliminates manual design effort by providing customizable templates, secure a
 
 ## 🏗 System Architecture
 
-The application follows a **Client–Server Architecture**:
-
 - **Frontend:** React.js  
 - **Backend:** Node.js + Express.js  
 - **Database:** MongoDB  
